@@ -73,7 +73,7 @@
 
         .video-viewport {
             position: relative;
-            width: 100%;
+            width: 90%;
             max-width: 720px;
             aspect-ratio: 16 / 9;
             z-index: 10;
@@ -186,13 +186,13 @@
 <body>
 
     <!-- Header UI -->
-    <header class="fixed top-0 w-full p-10 flex justify-between items-start z-50">
-        <div class="flex flex-col">
+    <header class="fixed top-0 w-full p-6 md:p-10 flex flex-col md:flex-row justify-between items-center md:items-start z-50 bg-black/50 md:bg-transparent backdrop-blur-md md:backdrop-blur-none">
+        <div class="flex flex-col items-center md:items-start text-center md:text-left mb-4 md:mb-0">
             <span class="label-tiny uppercase font-bold tracking-[0.4em]">Smart Energy Monitoring System</span>
             <span class="label-tiny opacity-30 mt-1 uppercase">Engineering Presentation</span>
         </div>
 
-        <div class="flex gap-16">
+        <div class="flex gap-6 md:gap-16">
             <div class="flex flex-col items-end">
                 <span class="label-tiny">• DEPT OF COMPUTER SCIENCE & ENGINEERING</span>
 
@@ -211,7 +211,7 @@
     <main class="main-stage">
         <div class="video-viewport group">
             <!-- Top Metadata -->
-            <div class="absolute -top-12 left-0 w-full flex justify-between items-end pb-2">
+            <div class="absolute -top-14 md:-top-12 left-0 w-full flex flex-col md:flex-row justify-between items-center md:items-end gap-2 pb-2">
                 <div class="label-tiny">HARDWARE PROTOTYPE v1.0</div>
                 <div class="flex gap-3">
                     <span class="w-1 h-1 rounded-full bg-blue-500 animate-pulse"></span>
@@ -221,11 +221,11 @@
             </div>
 
             <!-- Vertical Parameter Scales -->
-            <div class="measurement-scale scale-left">
+            <div class="measurement-scale scale-left hidden md:flex">
                 <span>230.4V</span><span>50.0Hz</span><span>12.5A</span><span>2.8kW</span><span>0.98PF</span><span>0.0%
                     THD</span>
             </div>
-            <div class="measurement-scale scale-right">
+            <div class="measurement-scale scale-right hidden md:flex">
                 <span>ACTIVE</span><span>LOGGING</span><span>SYNCED</span><span>SECURE</span><span>NODAL</span><span>v1.0.2</span>
             </div>
 
@@ -253,9 +253,9 @@
             </div>
 
             <!-- Bottom Metadata -->
-            <div class="absolute -bottom-14 left-0 w-full flex justify-between items-start pt-2">
+            <div class="absolute -bottom-20 md:-bottom-14 left-0 w-full flex flex-col md:flex-row justify-between items-center md:items-start gap-2 pt-2">
                 <div class="label-tiny">SERIAL: SEMS-8821-X</div>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center text-center">
                     <div class="label-tiny font-bold tracking-[0.4em] mb-1 uppercase">IOT ENABLED POWER ANALYSIS UNIT
                     </div>
                     <div class="label-tiny opacity-30">DEVELOPED BY RESEARCH PHASE II</div>
@@ -264,15 +264,15 @@
             </div>
         </div>
 
-        <div class="absolute bottom-10 left-10 flex gap-10 items-center">
+        <div class="absolute bottom-6 md:bottom-10 left-6 md:left-10 flex gap-6 md:gap-10 items-center">
             <span class="label-tiny opacity-30">01 / 04</span>
-            <div class="flex gap-6">
+            <div class="flex gap-4 md:gap-6">
                 <span class="label-tiny border-b border-current pb-1 cursor-pointer">OVERVIEW</span>
-                <span class="label-tiny opacity-30 cursor-pointer">SCHEMATICS</span>
+                <span class="label-tiny opacity-30 cursor-pointer hidden md:block">SCHEMATICS</span>
             </div>
         </div>
 
-        <div class="absolute bottom-10 right-10 flex gap-10 items-center">
+        <div class="absolute bottom-6 md:bottom-10 right-6 md:right-10 flex gap-6 md:gap-10 items-center">
             <span class="label-tiny opacity-30 uppercase">Presentation Mode</span>
             <div class="w-2 h-2 rounded-full border border-current opacity-30"></div>
         </div>
@@ -280,9 +280,9 @@
 
     <!-- Project Description -->
     <section id="about" class="min-h-screen flex flex-col items-center justify-center px-10 bg-zinc-950">
-        <div class="max-w-3xl text-center">
-            <span class="label-tiny mb-10 block opacity-40">The Mission</span>
-            <h2 class="serif-font text-5xl md:text-6xl italic mb-10 leading-tight">
+        <div class="max-w-3xl text-center px-6">
+            <span class="label-tiny mb-6 md:mb-10 block opacity-40">The Mission</span>
+            <h2 class="serif-font text-3xl md:text-6xl italic mb-6 md:mb-10 leading-tight">
                 "Promoting efficient and sustainable electricity consumption through real-time visibility."
             </h2>
             <div class="w-20 h-px bg-current mx-auto mb-10 opacity-20"></div>
@@ -314,9 +314,9 @@
     <!-- Hardware Section -->
     <section id="hardware" class="min-h-screen px-10 py-32 bg-black">
         <div class="max-w-6xl mx-auto">
-            <div class="border-b border-white/5 pb-8 mb-16 flex justify-between items-end">
+            <div class="border-b border-white/5 pb-8 mb-16 flex flex-col md:flex-row justify-between items-center md:items-end gap-4 text-center md:text-left">
                 <div>
-                    <h3 class="serif-font text-5xl italic mb-2">Hardware Architecture</h3>
+                    <h3 class="serif-font text-3xl md:text-5xl italic mb-2">Hardware Architecture</h3>
                     <p class="label-tiny opacity-40">Core Component Specifications</p>
                 </div>
                 <div class="label-tiny opacity-30">SYSTEM REQUISITES</div>
@@ -400,12 +400,11 @@
     <!-- Team Section -->
     <section id="team" class="min-h-[50vh] px-10 py-32 flex items-center justify-center bg-zinc-950">
         <div class="max-w-5xl w-full">
-            <div class="border-b border-white/5 pb-8 mb-16 flex justify-between items-end">
+            <div class="border-b border-white/5 pb-8 mb-16 flex flex-col md:flex-row justify-between items-center md:items-end gap-4 text-center md:text-left">
                 <div>
-                    <h3 class="serif-font text-5xl italic mb-2">Contributors</h3>
+                    <h3 class="serif-font text-3xl md:text-5xl italic mb-2">Contributors</h3>
                     <p class="label-tiny opacity-40">Engineering Research Team</p>
                 </div>
-
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
@@ -428,7 +427,7 @@
         </div>
     </section>
 
-    <footer class="p-20 text-center border-t border-white/5 bg-zinc-950">
+    <footer class="p-10 md:p-20 text-center border-t border-white/5 bg-zinc-950">
         <p class="label-tiny opacity-20">DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</p>
         <p class="serif-font text-xl opacity-40 italic mt-4">Innovation through precise measurement.</p>
     </footer>
