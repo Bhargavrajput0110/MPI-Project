@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Energy Monitoring System | Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --accent-color: #dfd3ba;
+            --tech-blue: #4da6ff;
+            --ui-border: rgba(223, 211, 186, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(223, 211, 186, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            color: var(--accent-color);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .serif-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Engineering UI Components */
+        .measurement-scale {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8px;
+            color: rgba(223, 211, 186, 0.4);
+            font-family: monospace;
+            padding: 30px 0;
+            pointer-events: none;
+        }
+
+        .scale-left {
+            left: -55px;
+            border-right: 1px solid rgba(223, 211, 186, 0.1);
+        }
+
+        .scale-right {
+            right: -55px;
+            border-left: 1px solid rgba(223, 211, 186, 0.1);
+        }
+
+        /* Video Container Architecture */
+        .main-stage {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-viewport {
+            position: relative;
+            width: 100%;
+            max-width: 720px;
+            aspect-ratio: 16 / 9;
+            z-index: 10;
+        }
+
+        .video-box {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9);
+        }
+
+        .corner {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: var(--accent-color);
+            opacity: 0.3;
+        }
+
+        .c-tl {
+            top: 15px;
+            left: 15px;
+            border-top: 1px solid;
+            border-left: 1px solid;
+        }
+
+        .c-tr {
+            top: 15px;
+            right: 15px;
+            border-top: 1px solid;
+            border-right: 1px solid;
+        }
+
+        .c-bl {
+            bottom: 15px;
+            left: 15px;
+            border-bottom: 1px solid;
+            border-left: 1px solid;
+        }
+
+        .c-br {
+            bottom: 15px;
+            right: 15px;
+            border-bottom: 1px solid;
+            border-right: 1px solid;
+        }
+
+        .label-tiny {
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            font-weight: 600;
+            opacity: 0.6;
+        }
+
+        /* Hardware Cards */
+        .hw-card {
+            border: 1px solid rgba(223, 211, 186, 0.05);
+            padding: 1rem;
+            transition: all 0.5s ease;
+            position: relative;
+            background: rgba(255, 255, 255, 0.01);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 200px;
+            justify-content: center;
+        }
+
+        .hw-card:hover {
+            border-color: rgba(223, 211, 186, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-5px);
+        }
+
+        .hw-card-content {
+            padding: 1.5rem;
+        }
+
+        /* Section visibility */
+        section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1.2s ease-out;
+        }
+
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header UI -->
+    <header class="fixed top-0 w-full p-10 flex justify-between items-start z-50">
+        <div class="flex flex-col">
+            <span class="label-tiny uppercase font-bold tracking-[0.4em]">Smart Energy Monitoring System</span>
+            <span class="label-tiny opacity-30 mt-1 uppercase">Engineering Presentation</span>
+        </div>
+
+        <div class="flex gap-16">
+            <div class="flex flex-col items-end">
+                <span class="label-tiny">• DEPT OF COMPUTER SCIENCE & ENGINEERING</span>
+                <span class="label-tiny opacity-30 mt-1">SESSION 2024 - 2025</span>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="label-tiny flex items-center gap-2">
+                    <span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span>
+                    SYSTEM: ONLINE
+                </span>
+                <span id="current-time" class="label-tiny opacity-30 mt-1">00:00:00 UTC</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Showcase -->
+    <main class="main-stage">
+        <div class="video-viewport group">
+            <!-- Top Metadata -->
+            <div class="absolute -top-12 left-0 w-full flex justify-between items-end pb-2">
+                <div class="label-tiny">HARDWARE PROTOTYPE v1.0</div>
+                <div class="flex gap-3">
+                    <span class="w-1 h-1 rounded-full bg-blue-500 animate-pulse"></span>
+                    <span class="label-tiny opacity-40 italic">LIVE DATA STREAM</span>
+                </div>
+                <div class="label-tiny">IEEE COMPLIANT ARCHIVE</div>
+            </div>
+
+            <!-- Vertical Parameter Scales -->
+            <div class="measurement-scale scale-left">
+                <span>230.4V</span><span>50.0Hz</span><span>12.5A</span><span>2.8kW</span><span>0.98PF</span><span>0.0%
+                    THD</span>
+            </div>
+            <div class="measurement-scale scale-right">
+                <span>ACTIVE</span><span>LOGGING</span><span>SYNCED</span><span>SECURE</span><span>NODAL</span><span>v1.0.2</span>
+            </div>
+
+            <!-- The Player -->
+            <div class="video-box group">
+                <video autoplay muted loop playsinline class="w-full h-full object-contain bg-black" style="filter: contrast(1.05) brightness(1.05);">
+                    <source src="assets/videos/landing-video.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 pointer-events-none border border-white/5"></div>
+                <div class="corner c-tl"></div>
+                <div class="corner c-tr"></div>
+                <div class="corner c-bl"></div>
+                <div class="corner c-br"></div>
+
+                <div
+                    class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-black/20">
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                            <span class="label-tiny text-white tracking-[0.6em]">Demonstration Reel</span>
+                        </div>
+                        <p class="text-[10px] serif-font italic opacity-60">Technical Walkthrough</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Metadata -->
+            <div class="absolute -bottom-14 left-0 w-full flex justify-between items-start pt-2">
+                <div class="label-tiny">SERIAL: SEMS-8821-X</div>
+                <div class="flex flex-col items-center">
+                    <div class="label-tiny font-bold tracking-[0.4em] mb-1 uppercase">IOT ENABLED POWER ANALYSIS UNIT
+                    </div>
+                    <div class="label-tiny opacity-30">DEVELOPED BY RESEARCH PHASE II</div>
+                </div>
+                <div class="label-tiny">TS: 2024.04.28</div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-10 flex gap-10 items-center">
+            <span class="label-tiny opacity-30">01 / 04</span>
+            <div class="flex gap-6">
+                <span class="label-tiny border-b border-current pb-1 cursor-pointer">OVERVIEW</span>
+                <span class="label-tiny opacity-30 cursor-pointer">SCHEMATICS</span>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 right-10 flex gap-10 items-center">
+            <span class="label-tiny opacity-30 uppercase">Presentation Mode</span>
+            <div class="w-2 h-2 rounded-full border border-current opacity-30"></div>
+        </div>
+    </main>
+
+    <!-- Project Description -->
+    <section id="about" class="min-h-screen flex flex-col items-center justify-center px-10 bg-zinc-950">
+        <div class="max-w-3xl text-center">
+            <span class="label-tiny mb-10 block opacity-40">The Mission</span>
+            <h2 class="serif-font text-5xl md:text-6xl italic mb-10 leading-tight">
+                "Promoting efficient and sustainable electricity consumption through real-time visibility."
+            </h2>
+            <div class="w-20 h-px bg-current mx-auto mb-10 opacity-20"></div>
+            <p class="text-sm leading-loose opacity-50 font-light tracking-wide max-w-xl mx-auto">
+                A smart IoT system that monitors real-time energy usage, provides AI-based insights, and calculates
+                carbon footprint to promote efficient and sustainable electricity consumption.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 max-w-4xl mx-auto border-t border-white/5 pt-10">
+                <div class="text-center">
+                    <div class="label-tiny opacity-30 mb-2">Input Range</div>
+                    <div class="serif-font text-2xl italic">0-250V AC</div>
+                </div>
+                <div class="text-center">
+                    <div class="label-tiny opacity-30 mb-2">Sampling Rate</div>
+                    <div class="serif-font text-2xl italic">1.2kHz</div>
+                </div>
+                <div class="text-center">
+                    <div class="label-tiny opacity-30 mb-2">Cloud Latency</div>
+                    <div class="serif-font text-2xl italic">&lt;250ms</div>
+                </div>
+                <div class="text-center">
+                    <div class="label-tiny opacity-30 mb-2">Precision</div>
+                    <div class="serif-font text-2xl italic">±0.5%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hardware Section -->
+    <section id="hardware" class="min-h-screen px-10 py-32 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="border-b border-white/5 pb-8 mb-16 flex justify-between items-end">
+                <div>
+                    <h3 class="serif-font text-5xl italic mb-2">Hardware Architecture</h3>
+                    <p class="label-tiny opacity-40">Core Component Specifications</p>
+                </div>
+                <div class="label-tiny opacity-30">SYSTEM REQUISITES</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- ESP32 -->
+                <div class="hw-card">
+                    <div class="hw-card-content">
+                        <span class="label-tiny opacity-30">MCU-01</span>
+                        <h4 class="serif-font text-2xl mt-2 mb-4">ESP32 Microcontroller</h4>
+                        <p class="text-xs leading-relaxed opacity-50">High-performance MCU with integrated Wi-Fi and
+                            Dual-mode Bluetooth for core processing and cloud gateway duties.</p>
+                    </div>
+                </div>
+
+                <!-- Voltage Sensor -->
+                <div class="hw-card">
+                    <div class="hw-card-content">
+                        <span class="label-tiny opacity-30">SEN-01</span>
+                        <h4 class="serif-font text-2xl mt-2 mb-4">ZMPT101B Voltage Sensor</h4>
+                        <p class="text-xs leading-relaxed opacity-50">Precision active voltage transformer for measuring
+                            high-accuracy AC mains voltage for power calculations.</p>
+                    </div>
+                </div>
+
+                <!-- Current Sensor -->
+                <div class="hw-card">
+                    <div class="hw-card-content">
+                        <span class="label-tiny opacity-30">SEN-02</span>
+                        <h4 class="serif-font text-2xl mt-2 mb-4">ACS712 Current Sensor</h4>
+                        <p class="text-xs leading-relaxed opacity-50">Linear Hall-effect based current sensor designed
+                            to measure AC/DC current for real-time load analysis.</p>
+                    </div>
+                </div>
+
+                <!-- Temperature & Humidity Sensor -->
+                <div class="hw-card">
+                    <div class="hw-card-content">
+                        <span class="label-tiny opacity-30">SEN-03</span>
+                        <h4 class="serif-font text-2xl mt-2 mb-4">DHT11 (Temp & Humidity)</h4>
+                        <p class="text-xs leading-relaxed opacity-50">Digital signal acquisition module for
+                            environmental data, aiding in correlating heat dissipation with energy load.</p>
+                    </div>
+                </div>
+
+                <!-- Expansion Board -->
+                <div class="hw-card">
+                    <div class="hw-card-content">
+                        <span class="label-tiny opacity-30">MOD-01</span>
+                        <h4 class="serif-font text-2xl mt-2 mb-4">ESP32 Expansion Board</h4>
+                        <p class="text-xs leading-relaxed opacity-50">Shield providing easy GPIO access and terminal
+                            block connections for robust hardware integration.</p>
+                    </div>
+                </div>
+
+                <!-- Relay Module -->
+                <div class="hw-card">
+                    <div class="hw-card-content">
+                        <span class="label-tiny opacity-30">ACT-01</span>
+                        <h4 class="serif-font text-2xl mt-2 mb-4">Relay Module</h4>
+                        <p class="text-xs leading-relaxed opacity-50">Controlled electromagnetic switch for isolating
+                            the high-voltage load circuit from the logic circuit.</p>
+                    </div>
+                </div>
+
+                <!-- Programming Interface -->
+                <div class="hw-card lg:col-span-3">
+                    <div class="hw-card-content">
+                            <span class="label-tiny opacity-30">INT-01</span>
+                            <h4 class="serif-font text-3xl mt-2 mb-4">Programming Interface</h4>
+                            <p class="text-xs leading-relaxed opacity-50 max-w-md">USB connectivity for firmware
+                                deployment and hardware debugging via serial communication protocols.</p>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="min-h-[50vh] px-10 py-32 flex items-center justify-center bg-zinc-950">
+        <div class="max-w-5xl w-full">
+            <div class="border-b border-white/5 pb-8 mb-16 flex justify-between items-end">
+                <div>
+                    <h3 class="serif-font text-5xl italic mb-2">Contributors</h3>
+                    <p class="label-tiny opacity-40">Engineering Research Team</p>
+                </div>
+                <div class="text-right">
+                    <span class="label-tiny">Spring 2024</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div class="group">
+                    <div
+                        class="serif-font text-3xl italic py-4 border-l border-white/10 pl-6 group-hover:border-white transition-all">
+                        Mahi Patel</div>
+                </div>
+                <div class="group">
+                    <div
+                        class="serif-font text-3xl italic py-4 border-l border-white/10 pl-6 group-hover:border-white transition-all">
+                        Riddhi Pandya</div>
+                </div>
+                <div class="group">
+                    <div
+                        class="serif-font text-3xl italic py-4 border-l border-white/10 pl-6 group-hover:border-white transition-all">
+                        Rajput Bhargav</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="p-20 text-center border-t border-white/5 bg-zinc-950">
+        <p class="label-tiny opacity-20">DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</p>
+        <p class="serif-font text-xl opacity-40 italic mt-4">Innovation through precise measurement.</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        const scales = document.querySelectorAll('.measurement-scale span');
+        setInterval(() => {
+            const randomScale = scales[Math.floor(Math.random() * scales.length)];
+            randomScale.style.opacity = '0.8';
+            setTimeout(() => randomScale.style.opacity = '0.4', 200);
+        }, 3000);
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('current-time').textContent = 
+                now.toLocaleTimeString('en-GB', { timeZone: 'UTC' }) + ' UTC';
+        }, 1000);
+    </script>
+</body>
+
+</html>
